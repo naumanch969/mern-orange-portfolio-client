@@ -22,7 +22,7 @@ const BlogCard = ({ blog }) => {
 
             <div onClick={() => setOpenModal(true)} className="flex flex-col justify-start bg-darkGray gap-2 my-4 min-h-[450px] rounded-[8px] sm:w-fit w-[80%]  " >
                 <div className="w-full h-[12rem] " >
-                    <img src={blog.images[1]?.url} alt="image" className="w-full h-full  rounded-t-[8px] " />
+                    <img src={blog.image} alt="image" className="w-full h-full  rounded-t-[8px] " />
                 </div>
                 <div className="flex flex-col w-full h-auto  justify-between items-start p-4 " >
                     <h5 className="text-orange text-[16px] " >{blog.date}</h5>
@@ -39,7 +39,7 @@ const BlogCard = ({ blog }) => {
                 <div className="max-h-[80%] overflow-y-scroll border-textGray border-[1px] rounded-[4px] absolute top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%] lg:w-[40%] md:w-[60%] sm:w-[80%] w-[90%]" >
                     <div className=" p-[2rem] bg-darkGray flex flex-col gap-[1rem] w-full " >
                         <div className="w-full h-[22rem] rounded-t-[20px] " >
-                            <img src={blog.images[1]?.url} alt="image" className="w-full h-full " />
+                            <img src={blog.image} alt="image" className="w-full h-full " />
                         </div>
                         <div className="flex flex-col w-full h-auto  justify-between items-start p-4 " >
                             <h5 className="text-orange text-[16px] " >{blog.date}</h5>

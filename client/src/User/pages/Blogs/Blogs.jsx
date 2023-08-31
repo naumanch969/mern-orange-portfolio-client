@@ -6,16 +6,24 @@ import { Pagination } from "swiper";
 
 import { MainHeading } from "../../components"
 import BlogCard from './BlogCard'
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getBlogs } from "../../../redux/actions/blog";
 
 
 
-const Blogs = ({ content }) => {
+const Blogs = () => {
 
     /////////////////////////////////////////////////////////////// VARIABLES ///////////////////////////////////////////////////////////////////////
+    const dispatch = useDispatch()
+    const { blogs } = useSelector(state => state.blog)
 
     /////////////////////////////////////////////////////////////// STATES //////////////////////////////////////////////////////////////////////////
 
     /////////////////////////////////////////////////////////////// USE EFFECTS /////////////////////////////////////////////////////////////////////
+    useEffect(() => {
+        dispatch(getBlogs())
+    }, [])
 
     /////////////////////////////////////////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////
 
@@ -30,9 +38,9 @@ const Blogs = ({ content }) => {
 
             <div className="w-full flex justify-center " >
                 <MainHeading
-                    forwardHeading={content?.forwardHeading}
-                    backHeading={content?.backHeading}
-                    detail={content?.detail}
+                    forwardHeading='Blogs'
+                    backHeading='Blogs'
+                    detail='In my blog posts, I share my insights and expertise on the latest web development trends, covering topics such as the MERN stack, front-end frameworks, back-end technologies, and best practices for building robust and scalable web applications.'
                 />
             </div>
 
@@ -60,7 +68,7 @@ const Blogs = ({ content }) => {
                 className="w-full"
             >
                 {
-                    content?.blogs.map((blog, index) => (
+                    blogs.map((blog, index) => (
                         <SwiperSlide key={index} className="p-[1rem] flex justify-center " >
                             <BlogCard blog={blog} />
                         </SwiperSlide>

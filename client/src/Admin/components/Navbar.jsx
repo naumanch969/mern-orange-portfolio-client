@@ -4,11 +4,13 @@ import { Person, SwitchLeftOutlined, Dehaze } from '@mui/icons-material'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 
 const Navbar = ({ navbarMenuRef, showMenu, setShowMenu }) => {
     const navigate = useNavigate()
-    const { user, setPage, setMode, setShowSidebar } = useStateContext()
+    const { setMode, setShowSidebar } = useStateContext()
+    const { loggedUser } = useSelector(state => state.user)
 
     const navigateToAccount = () => {
         navigate('/auth')
@@ -31,9 +33,9 @@ const Navbar = ({ navbarMenuRef, showMenu, setShowMenu }) => {
             </div>
 
             <div className="flex items-center gap-[1rem] " >
-                <p className="text-[24px] capitalize md:block sm:block hidden " >{user?.name}</p>
+                <p className="text-[24px] capitalize md:block sm:block hidden " >{loggedUser?.name}</p>
                 <div className='relative ' >
-                    <span onClick={() => setShowMenu(pre => !pre)} className="flex justify-center items-center bg-orange rounded-[50%] w-[40px] h-[40px] text-[24px] capitalize cursor-pointer " >{user?.name?.charAt(0) || 'U'}</span>
+                    <span onClick={() => setShowMenu(pre => !pre)} className="flex justify-center items-center bg-orange rounded-[50%] w-[40px] h-[40px] text-[24px] capitalize cursor-pointer " >{loggedUser?.name?.charAt(0) || 'U'}</span>
                     {
                         showMenu &&
                         <motion.div

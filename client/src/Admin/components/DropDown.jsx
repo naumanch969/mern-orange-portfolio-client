@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { ArrowDropDown } from '@mui/icons-material';
 
-const DropDown = ({ icons, item }) => {
-    const [inputText, setInputText] = useState(item.icon);
-    const [selectedIcon, setSelectedIcon] = useState(icons.find(icon => icon.name == item.icon) || null);
+const DropDown = ({ icons, item, setItem }) => {
+
+    const [inputText, setInputText] = useState(item?.icon);
+    const [selectedIcon, setSelectedIcon] = useState(icons.find(icon => icon.name == item?.icon) || null);
     const [showMenu, setShowMenu] = useState(false);
     const [filteredIcons, setFilteredIcons] = useState(icons);
 
@@ -17,7 +18,7 @@ const DropDown = ({ icons, item }) => {
     };
 
     const handleSelectIcon = (icon) => {
-        item.icon = icon.name           // item = service || contact || any other object
+        setItem({ ...item, icon: icon.name })
         setSelectedIcon(icon);
         setInputText(icon.name);
         setShowMenu(false);

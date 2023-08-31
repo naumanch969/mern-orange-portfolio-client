@@ -1,67 +1,73 @@
 import express from "express"
 import mongoose from "mongoose"
-import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import dotenv from "dotenv"
 import cors from "cors"
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 const app = express()
 dotenv.config()
 
-import userRoutes from "./Routes/user.js"
-import portfolioRoutes from "./Routes/portfolio.js"
-import navbarRoutes from "./Routes/navbar.js"
-import homeRoutes from "./Routes/home.js"
-import aboutRoutes from "./Routes/about.js" 
-import resumesRoutes from "./Routes/resumes.js"
-import servicesRoutes from "./Routes/services.js"
-import skillsRoutes from "./Routes/skills.js"
-import projectsRoutes from "./Routes/projects.js"
-import blogsRoutes from "./Routes/blogs.js"
-import testimonialsRoutes from "./Routes/testimonials.js"
-import freelancingRoutes from "./Routes/freelancing.js"
-import contactRoutes from "./Routes/contact.js"
-import footerRoutes from "./Routes/footer.js"
+import generalRoutes from "./routes/general.js"
+import authRoutes from "./routes/auth.js"
+import userRoutes from "./routes/user.js"
+import resumesRoutes from "./routes/resumes.js"
+import servicesRoutes from "./routes/services.js"
+import skillsRoutes from "./routes/skills.js"
+import projectsRoutes from "./routes/projects.js"
+import blogsRoutes from "./routes/blogs.js"
+import testimonialsRoutes from "./routes/testimonials.js"
+import freelancingRoutes from "./routes/freelancing.js"
+import contactRoutes from "./routes/contact.js"
+import { upload } from "./multer.js"
 
 
 const PORT = process.env.PORT || 5000;
-const CONNECTION_URL = process.env.MONGOOSE_CONNECTION_URL
- 
-app.use(cors())
-app.use(bodyParser.json({ limit: '50mb' })); // define the size limit
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));	// define the size limit
-app.use(bodyParser.json())
+const CONNECTION_URL = process.env.ATLAS_URL
 
+app.use(cors())
 app.use(cookieParser());
 app.use(express.json());
 
-app.use('/portfolio', portfolioRoutes);
-app.use('/portfolio/user', userRoutes);
-app.use('/portfolio/navbar', navbarRoutes);
-app.use('/portfolio/home', homeRoutes);
-app.use('/portfolio/about', aboutRoutes);
-app.use('/portfolio/resumes', resumesRoutes);
-app.use('/portfolio/services', servicesRoutes);
-app.use('/portfolio/skills', skillsRoutes);
-app.use('/portfolio/projects', projectsRoutes);
-app.use('/portfolio/blogs', blogsRoutes);
-app.use('/portfolio/testimonials', testimonialsRoutes);
-app.use('/portfolio/freelancing', freelancingRoutes);
-app.use('/portfolio/contact', contactRoutes);
-app.use('/portfolio/footer', footerRoutes);
+// serving static files | images
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+app.use('/uploads', express.static(join(__dirname, 'uploads')));
+
+app.use('/', generalRoutes);
+app.use('/auth', authRoutes);
+app.use('/user', userRoutes);
+app.use('/resume', resumesRoutes);
+app.use('/service', servicesRoutes);
+app.use('/skill', skillsRoutes);
+app.use('/project', projectsRoutes);
+app.use('/blog', blogsRoutes);
+app.use('/testimonial', testimonialsRoutes);
+app.use('/freelancing', freelancingRoutes);
+app.use('/contact', contactRoutes);
 
 
-mongoose.set('strictQuery', false);
+app.use((err, req, res, next) => {
+    const message = err.message || 'Something went wrong'
+    const status = err.status || 500
+    res.status(status).json({ message, status, stack: err.stack })
+    next()
+})
+
+
+
+
 
 app.get("/", (_req, res) => {
     res.status(200).send("App is Working")
 })
 
- 
+mongoose.set('strictQuery', false);
 mongoose.connect(CONNECTION_URL)
     .then(
         () => app.listen(PORT, () => console.log(`listening at port ${PORT}`))
     )
-    .catch( 
+    .catch(
         (err) => console.log(`the error to connect to mongodb is "${err}"`)
     ) 

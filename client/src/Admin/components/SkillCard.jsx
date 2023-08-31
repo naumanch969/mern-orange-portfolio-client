@@ -2,18 +2,18 @@ import { Close } from "@mui/icons-material"
 import { useState, useRef, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Textarea } from '.'
-import { useStateContext } from "../../contexts/ContextProvider"
 import { useDispatch } from "react-redux"
-import { updateSkill, deleteSkill } from '../../store/actions/admin/skills'
+import { updateSkill, deleteSkill } from '../../redux/actions/skill'
 import TextareaAutosize from "react-textarea-autosize"
 
 const Skill = ({ id: skillId }) => {
-    const { skills, setSkills } = useStateContext()
+
 
     /////////////////////////////////////////////////////////////// VARIABLES ///////////////////////////////////////////////////////////////////////
     const inputRef = useRef(null)
     const outputRef = useRef(null)
-    const findedSkill = skills.skills.find(skill => skill._id == skillId)
+    const { skills } = useSelector(state => state.skill)
+    const findedSkill = skills.find(skill => skill._id == skillId)
     const dispatch = useDispatch()
 
     /////////////////////////////////////////////////////////////// STATES //////////////////////////////////////////////////////////////////////////

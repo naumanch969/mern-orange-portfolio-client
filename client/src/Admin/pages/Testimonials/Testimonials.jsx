@@ -1,149 +1,79 @@
-import { motion } from "framer-motion"
-import { useState, useEffect, useRef } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from 'react-redux'
-
-
-import { Heading, Textarea, Error } from "../../components"
-import TestimonialCard from './TestimonialCard'
+import { Heading, Error, Table } from "../../components"
 import { Loading } from '../../../utils/Components'
-import { useStateContext } from '../../../contexts/ContextProvider'
-import { getTestimonialsContent, createTestimonialsContent, updateForwardHeading, updateBackHeading, updateDetail, addTestimonial, deleteTestimonialsCollection } from '../../../store/actions/admin/testimonials'
+import { getTestimonials } from "../../../redux/actions/testimonial"
+import Create from "./Create"
+import Update from "./Update"
+import Delete from "./Delete"
+import View from "./View"
+import { Delete as DeleteIcon, Edit, Visibility } from "@mui/icons-material"
+import { IconButton } from "@mui/material"
 
 const Testimonials = () => {
-    const { initialTestimonialsState, testimonials, setTestimonials } = useStateContext()
 
     /////////////////////////////////////////////////////////////// VARIABLES ///////////////////////////////////////////////////////////////////////
     const dispatch = useDispatch()
+    const { testimonials, isFetching, error } = useSelector(state => state.testimonial)
 
-    const { result, isLoading, isError, error } = useSelector(state => state.testimonials)
+    const columns = [
+        { field: '_id', headerName: 'ID', width: 90 },
+        { field: 'image', headerName: 'Image', width: 150, renderCell: (params) => (<img src={params.row.image} alt={params.row.title} className="w-[2rem] h-[2rem] rounded-full object-cover " />) },
+        { field: 'name', headerName: 'Name', width: 100, },
+        { field: 'designation', headerName: 'Designation', width: 100, },
+        { field: 'content', headerName: 'Content', width: 100, },
+        {
+            field: 'action', headerName: 'Action', width: 160, renderCell: (params) => (
+                <div className="flex  ">
+                    <IconButton onClick={() => { setOpenViewModal(true); setCurrentTestimonial(params.row) }} ><Visibility /></IconButton>
+                    <IconButton onClick={() => { setOpenUpdateModal(true); setCurrentTestimonial(params.row) }} ><Edit /></IconButton>
+                    <IconButton onClick={() => { setOpenDeleteModal(true); setCurrentTestimonial(params.row) }} ><DeleteIcon /></IconButton>
+                </div>
+            )
+        },
+    ];
 
     /////////////////////////////////////////////////////////////// STATES //////////////////////////////////////////////////////////////////////////
-
+    const [openCreateModal, setOpenCreateModal] = useState(false)
+    const [openViewModal, setOpenViewModal] = useState(false)
+    const [openUpdateModal, setOpenUpdateModal] = useState(false)
+    const [openDeleteModal, setOpenDeleteModal] = useState(false)
+    const [currentTestimonial, setCurrentTestimonial] = useState(null)
 
     /////////////////////////////////////////////////////////////// USE EFFECTS /////////////////////////////////////////////////////////////////////
     useEffect(() => {
-        dispatch(getTestimonialsContent())
+        dispatch(getTestimonials())
     }, [])
-    useEffect(() => {
-        setTestimonials({ ...testimonials, ...result })
-    }, [result])
+
 
     /////////////////////////////////////////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////
-    const changeForwardHeading = (text) => {
-        testimonials.forwardHeading = text
-        dispatch(updateForwardHeading(text))
-        setTestimonials({ ...testimonials })
-    }
-    const changeBackHeading = (text) => {
-        testimonials.backHeading = text
-        dispatch(updateBackHeading(text))
-        setTestimonials({ ...testimonials })
-    }
-    const changeDetail = (text) => {
-        testimonials.detail = text
-        dispatch(updateDetail(text))
-        setTestimonials({ ...testimonials })
-    }
 
-
-    const addTestimonialFunc = () => {
-        const testimonialData = { content: '', name: '', designation: '', image: {} }
-        testimonials.testimonials = testimonials.testimonials.concat({ ...testimonialData, _id: '' })
-        dispatch(addTestimonial(testimonialData))
-        setTestimonials({ ...testimonials })
-    }
-
-
-    const createTestimonialsSection = () => {
-        dispatch(createTestimonialsContent())
-    }
-
-
-    if (isLoading) return <Loading />
-    if (isError) return <Error error={error?.message} />
+    if (isFetching) return <Loading />
+    if (error) return <Error error={error} />
 
     return (
         <div className="w-full h-full "  >
-            {
-                result.testimonialsDocumentNotExist
-                    ?
-                    <div className="w-full h-full flex justify-center items-center  " >
-                        <button onClick={createTestimonialsSection} className="bg-orange px-[24px] py-[12px] rounded-[24px] " >Create Testimonials Section</button>
-                    </div>
-                    :
-                    <div className="flex flex-col gap-[2rem] " >
-                        <Heading
-                            title="testimonials"
-                            deleteSection={deleteTestimonialsCollection}
-                            initialState={initialTestimonialsState}
-                            state={testimonials}
-                            setState={setTestimonials}
-                        />
-                        <div className="flex flex-col gap-[1rem] " >
 
-                            <Textarea
-                                heading='Fore Heading'
-                                placeholder='Type Here'
-                                attribute='forwardHeading'
-                                blurFunction={changeForwardHeading}
-                                state={testimonials}
-                                setState={setTestimonials}
-                            />
-                            <Textarea
-                                heading='Back Heading'
-                                placeholder='Type Here'
-                                attribute='backHeading'
-                                blurFunction={changeBackHeading}
-                                state={testimonials}
-                                setState={setTestimonials}
-                            />
-                            <Textarea
-                                heading='Detail'
-                                placeholder='Type Here'
-                                attribute='detail'
-                                blurFunction={changeDetail}
-                                state={testimonials}
-                                setState={setTestimonials}
-                            />
+            <Create open={openCreateModal} setOpen={setOpenCreateModal} />
+            <Update open={openUpdateModal} setOpen={setOpenUpdateModal} testimonial={currentTestimonial} />
+            <Delete open={openDeleteModal} setOpen={setOpenDeleteModal} testimonialId={currentTestimonial?._id} />
+            <View open={openViewModal} setOpen={setOpenViewModal} testimonial={currentTestimonial} />
 
+            <div className="flex flex-col gap-[2rem] " >
 
+                <Heading title="testimonials" setOpen={setOpenCreateModal} />
 
-                            <div className="flex sm:flex-row flex-col " >
-                                <h6 className="capitalize lg:w-[20%] md:w-[25%] sm:w-[30%] w-full text-[18px] text-white " >testimonials :</h6>
-                                <div className="flex flex-col gap-[1rem] lg:w-[80%] md:w-[75%] sm:w-[70%] w-full " >
-                                    <p className="capitalize  text-[18px] text-white  " >{testimonials.testimonials.length}</p>
+                <div className="w-full flex flex-wrap md:flex-row sm:flex-col gap-[1rem] " >
+                    <Table
+                        rows={testimonials}
+                        columns={columns}
+                        isFetching={isFetching}
+                        error={error}
+                        rowsPerPage={5}
+                    />
+                </div>
 
-                                    <div className="flex flex-wrap md:flex-row sm:flex-col gap-[1rem] w-full " >
-                                        {
-                                            testimonials.testimonials.map((testimonial, index) => (
-                                                <div key={index} className="xl:w-[32%] lg:w-[48%] md:w-[48%] sm:w-[80%] w-full " >
-                                                    {
-                                                        testimonial._id
-                                                            ?
-                                                            <TestimonialCard testimonial={testimonial} />
-                                                            :
-                                                            <Loading title="Adding Card..." />
-                                                    }
-                                                </div>
-                                            ))
-                                        }
-                                    </div>
-                                    <div className="w-full flex justify-end items-center " >
-                                        <button onClick={() => addTestimonialFunc()} className="rounded-full bg-darkGray py-[4px] px-[12px] w-fit" >Add Testimonial</button>
-                                    </div>
-
-                                </div>
-                            </div>
-
-
-
-
-
-                        </div>
-
-
-                    </div>
-            }
+            </div>
         </div>
     )
 }

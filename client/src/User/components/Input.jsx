@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import { useStateContext } from '../../contexts/ContextProvider'
 import { VisibilityOff, RemoveRedEye } from '@mui/icons-material'
 
-const Input = ({ type, placeholder, attribute, blurFunction, showEyeIcon, formData, setFormData, validationMessage, textarea, rows }) => {      // attribute may either of 'email', 'name', 'password', 'confirmPassword'
+const Input = ({ type, placeholder, attribute, blurFunction, showEyeIcon, formData, setFormData,  textarea, rows }) => {      // attribute may either of 'email', 'name', 'password', 'confirmPassword'
 
     const [showPassword, setShowPassword] = useState(false)
 
@@ -36,10 +35,7 @@ const Input = ({ type, placeholder, attribute, blurFunction, showEyeIcon, formDa
                 {showEyeIcon && <button onClick={() => setShowPassword(pre => !pre)} className="absolute right-0 top-[50%] transform translate-y-[-50%] " > {showPassword ? <VisibilityOff /> : <RemoveRedEye />}  </button>}
             </div>
 
-            {
-                validationMessage[attribute] &&         //if any error occur
-                <p className="text-[12px] text-red " >{validationMessage[attribute]}</p>
-            }
+           
 
         </div>
     )

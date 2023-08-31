@@ -18,6 +18,16 @@ const Sidebar = () => {
     const { showSidebar, activeNavLink, setActiveNavLink, setShowSidebar } = useStateContext()
     /////////////////////////////////////////////////////////////// VARIABLES ///////////////////////////////////////////////////////////////////////
     const dispatch = useDispatch()
+    const sidebarArr = [
+        'resumes',
+        'services',
+        'skills',
+        'projects',
+        'blogs',
+        'freelancing',
+        'testimonials',
+        'contact',
+    ]
 
     /////////////////////////////////////////////////////////////// STATES //////////////////////////////////////////////////////////////////////////
     const [showScrollbar, setShowScrollbar] = useState(0)
@@ -87,19 +97,3 @@ const Sidebar = () => {
 
 
 export default Sidebar
-
-const sidebarArr = [
-    'overview',
-    'navbar',
-    'home',
-    'about',
-    'resumes',
-    'services',
-    'skills',
-    'projects',
-    'blogs',
-    'freelancing',
-    'testimonials',
-    'contact',
-    'footer',
-]

@@ -1,15 +1,15 @@
 import TextareaAutosize from "react-textarea-autosize"
-import { useStateContext } from '../../contexts/ContextProvider'
+import { useSelector } from "react-redux"
 
 const Textarea = ({ heading, placeholder, blurFunction, attribute, state, setState, id, subAttribute }) => {
     // attribute is the key/field/element of state (state may be about,contact,footer,projects etc.)
     // subAttribute is the key/field/element of findedObject (whose _id = id) of array which is key/field/element of home/about/skills/projects/footer/blogs
-    const { user } = useStateContext()
+    const { loggedUser } = useSelector(state => state.user)
 
     /////////////////////////////////////////////////////////////// VARIABLES ///////////////////////////////////////////////////////////////////////
     let findedObj = subAttribute ? state[attribute].find(att => att._id == id) : state
 
-    const isAdmin = user?.tokens?.find(token => token.name == 'admin_auth_token' || token.name == 'main_admin_auth_token')
+    const isAdmin = loggedUser?.tokens?.find(token => token.name == 'admin_auth_token' || token.name == 'main_admin_auth_token')
     /////////////////////////////////////////////////////////////// STATES //////////////////////////////////////////////////////////////////////////
 
     /////////////////////////////////////////////////////////////// USE EFFECTS /////////////////////////////////////////////////////////////////////

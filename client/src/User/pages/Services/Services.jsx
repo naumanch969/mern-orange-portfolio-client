@@ -1,10 +1,21 @@
 import { motion } from "framer-motion"
-
 import ServiceCard from './ServiceCard'
 import { MainHeading } from "../../components"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { getServices } from '../../../redux/actions/service'
+import Service from './service'
 
-const Services = ({ content }) => {
+const Services = () => {
 
+    ////////////////////////////////////// VARIABLES /////////////////////////////////////////
+    const dispatch = useDispatch()
+    const { services } = useSelector(state => state.service)
+
+    ////////////////////////////////////// USE EFFECTS ///////////////////////////////////////
+    useEffect(() => {
+        dispatch(getServices())
+    }, [])
 
     return (
         <motion.section
@@ -17,23 +28,24 @@ const Services = ({ content }) => {
 
             <div className="w-full flex justify-center" >
                 <MainHeading
-                    forwardHeading={content?.forwardHeading}
-                    backHeading={content?.backHeading}
-                    detail={content?.detail}
+                    forwardHeading='Services'
+                    backHeading='Services'
+                    detail='Empowering through innovation. Our services are designed to transform ideas into impactful solutions, creating a bridge between vision and reality.'
                 />
             </div>
 
 
             <div className="flex flex-wrap md:justify-start justify-center gap-[24px] mt-[3rem] " >
-                {
-                    content?.services.map((service, index) => (
+                {/* {
+                    services.map((service, index) => (
                         <ServiceCard
                             key={index}
                             service={service}
                             index={index}
                         />
                     ))
-                }
+                } */}
+                <Service/>
             </div>
 
 
@@ -42,27 +54,3 @@ const Services = ({ content }) => {
 }
 
 export default Services
-
-
-const services = [
-    {
-        title: 'Web Design',
-        icon: 'icon'
-    },
-    {
-        title: 'Photo Editing',
-        icon: 'icon'
-    },
-    {
-        title: 'Web Development',
-        icon: 'icon'
-    },
-    {
-        title: 'MERN Stack Development',
-        icon: 'icon'
-    },
-    {
-        title: 'React js',
-        icon: 'icon'
-    },
-]

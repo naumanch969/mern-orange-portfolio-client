@@ -2,14 +2,21 @@ import { motion } from "framer-motion"
 
 import { MainHeading, Button } from "../../components"
 import ResumeCard from './ResumeCard'
+import { getResumes } from '../../../redux/actions/resume'
+import { useDispatch, useSelector } from "react-redux"
+import { useEffect } from "react"
 
-const Resume = ({ content }) => {
+const Resume = () => {
 
     /////////////////////////////////////////////////////////////// VARIABLES ///////////////////////////////////////////////////////////////////////
-
+    const dispatch = useDispatch()
+    const {resumes} = useSelector(state=>state.resume)
     /////////////////////////////////////////////////////////////// STATES //////////////////////////////////////////////////////////////////////////
 
     /////////////////////////////////////////////////////////////// USE EFFECTS /////////////////////////////////////////////////////////////////////
+    useEffect(() => {
+        dispatch(getResumes())
+    }, [])
 
     /////////////////////////////////////////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////
 
@@ -17,21 +24,22 @@ const Resume = ({ content }) => {
         <motion.section
             animate={{ y: [0, 1] }}
             transition={{ duration: .3, delayChildren: .5 }}
-            name="resume" whileInView={{ opacity: [0, 1] }}
+            name="resume"
+            whileInView={{ opacity: [0, 1] }}
             className="h-auto w-full flex flex-col  "
         >
 
             <div className="w-full flex justify-center" >
                 <MainHeading
-                    forwardHeading={content?.forwardHeading}
-                    backHeading={content?.backHeading}
-                    detail={content?.detail}
+                    forwardHeading='Resume'
+                    backHeading='Resume'
+                    detail=''
                 />
             </div>
 
             <div className="flex flex-wrap md;justify-between justify-center gap-[2rem] mt-[3rem] " >
                 {
-                    content?.resumes.map((resume, index) => (
+                    resumes.map((resume, index) => (
                         <ResumeCard
                             key={index}
                             title={resume.title}
@@ -44,7 +52,7 @@ const Resume = ({ content }) => {
             </div>
 
             <div className="flex justify-center mt-[2rem] " >
-                {content?.buttons[0] && <Button text={content?.buttons[0]?.text} color="black" background="orange" />}
+                 <Button text='Download CV' color="black" background="orange" />
 
             </div>
 

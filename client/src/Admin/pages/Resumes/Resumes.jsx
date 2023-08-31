@@ -1,180 +1,77 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from 'react-redux'
-import { Heading, Textarea, Button, Error } from "../../components"
-import ResumeCard from './ResumeCard'
+import { Heading, Error, Table } from "../../components"
 import { Loading } from '../../../utils/Components'
-import { useStateContext } from '../../../contexts/ContextProvider'
-import { getResumesContent, updateForwardHeading, updateBackHeading, updateDetail, addResume, addButton, updateButton, deleteButton, createResumesFirstDocument, deleteResumesCollection } from '../../../store/actions/admin/resumes'
+import { getResumes } from "../../../redux/actions/resume"
+import Create from "./Create"
+import Update from "./Update"
+import Delete from "./Delete"
+import View from "./View"
+import { Delete as DeleteIcon, Edit, Visibility } from "@mui/icons-material"
+import { IconButton } from "@mui/material"
 
 const Resumes = () => {
-    const { initialResumesState, resumes, setResumes, formattedDateTime } = useStateContext()
 
     /////////////////////////////////////////////////////////////// VARIABLES ///////////////////////////////////////////////////////////////////////
     const dispatch = useDispatch()
-
-    const { result, isLoading, isError, error } = useSelector(state => state.resumes)
+    const { resumes, isFetching, error } = useSelector(state => state.resume)
+    const columns = [
+        { field: '_id', headerName: 'ID', width: 90 },
+        { field: 'title', headerName: 'Title', width: 250, },
+        { field: 'subTitle', headerName: 'Sub Title', width: 200, },
+        { field: 'detail', headerName: 'Detail', width: 300, },
+        {
+            field: 'action', headerName: 'Action', width: 160, renderCell: (params) => (
+                <div className="flex  ">
+                    <IconButton onClick={() => { setOpenViewModal(true); setCurrentResume(params.row) }} ><Visibility /></IconButton>
+                    <IconButton onClick={() => { setOpenUpdateModal(true); setCurrentResume(params.row) }} ><Edit /></IconButton>
+                    <IconButton onClick={() => { setOpenDeleteModal(true); setCurrentResume(params.row) }} ><DeleteIcon /></IconButton>
+                </div>
+            )
+        },
+    ];
 
     /////////////////////////////////////////////////////////////// STATES //////////////////////////////////////////////////////////////////////////
-
+    const [openCreateModal, setOpenCreateModal] = useState(false)
+    const [openViewModal, setOpenViewModal] = useState(false)
+    const [openUpdateModal, setOpenUpdateModal] = useState(false)
+    const [openDeleteModal, setOpenDeleteModal] = useState(false)
+    const [currentResume, setCurrentResume] = useState(null)
 
     /////////////////////////////////////////////////////////////// USE EFFECTS /////////////////////////////////////////////////////////////////////
     useEffect(() => {
-        dispatch(getResumesContent())
+        dispatch(getResumes())
     }, [])
-    useEffect(() => {
-        setResumes({ ...resumes, ...result })
-    }, [result])
-
 
 
     /////////////////////////////////////////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////
-    const changeForwardHeading = (text) => {
-        resumes.forwardHeading = text
-        dispatch(updateForwardHeading(text))
-        setResumes({ ...resumes })
-    }
-    const changeBackHeading = (text) => {
-        resumes.backHeading = text
-        dispatch(updateBackHeading(text))
-        setResumes({ ...resumes })
-    }
-    const changeDetail = (text) => {
-        resumes.detail = text
-        dispatch(updateDetail(text))
-        setResumes({ ...resumes })
-    }
 
-    const addResumeFunc = () => {
-        const resumeData = {
-            title: 'title',
-            subTitle: 'sub title',
-            detail: 'lorem ipsum dolar lorem ipsum dolar lorem ipsum dolar lorem ipsum dolar',
-            date: formattedDateTime
-        }
-        resumes.resumes = resumes.resumes.concat({ ...resumeData, _id: '' })
-        dispatch(addResume(resumeData))
-        setResumes({ ...resumes })
-    }
-
-    const addBtn = () => {
-        resumes.buttons = resumes.buttons.concat({ text: ``, variant: 'contained', _id: '' })
-        dispatch(addButton(``, 'contained'))
-        setResumes({ ...resumes })
-    }
-
-    const createResumesSection = () => {
-        dispatch(createResumesFirstDocument())
-    }
-
-
-
-    if (isLoading) return <Loading />
-    if (isError) return <Error error={error?.message} />
+    if (isFetching) return <Loading />
+    if (error) return <Error error={error} />
 
     return (
         <div className="w-full h-full "  >
-            {
-                result.resumesDocumentNotExist
-                    ?
-                    <div className="w-full h-full flex justify-center items-center  " >
-                        <button onClick={createResumesSection} className="bg-orange px-[24px] py-[12px] rounded-[24px] " >Create Resumes Section</button>
-                    </div>
-                    :
-                    <div className="flex flex-col gap-[2rem] " >
-                        <Heading
-                            title="resumes"
-                            deleteSection={deleteResumesCollection}
-                            initialState={initialResumesState}
-                            state={resumes}
-                            setState={setResumes}
-                        />
-                        <div className="flex flex-col gap-[1rem] " >
-                            <Textarea
-                                heading='Fore Heading'
-                                placeholder='Type Here'
-                                attribute='forwardHeading'
-                                blurFunction={changeForwardHeading}
-                                state={resumes}
-                                setState={setResumes}
-                            />
-                            <Textarea
-                                heading='Back Heading'
-                                placeholder='Type Here'
-                                attribute='backHeading'
-                                blurFunction={changeBackHeading}
-                                state={resumes}
-                                setState={setResumes}
-                            />
-                            <Textarea
-                                heading='Detail'
-                                placeholder='Type Here'
-                                attribute='detail'
-                                blurFunction={changeDetail}
-                                state={resumes}
-                                setState={setResumes}
-                            />
 
-                            <div className="flex sm:flex-row flex-col " >
-                                <h6 className="capitalize lg:w-[20%] md:w-[25%] sm:w-[30%] w-full text-[18px] text-white " >resumes :</h6>
-                                <div className="flex flex-col gap-[1rem] lg:w-[80%] md:w-[75%] sm:w-[70%] w-full" >
-                                    <p className="capitalize  text-[18px] text-textGray  " >{resumes.resumes.length}</p>
+            <Create open={openCreateModal} setOpen={setOpenCreateModal} />
+            <Update open={openUpdateModal} setOpen={setOpenUpdateModal} resume={currentResume} />
+            <Delete open={openDeleteModal} setOpen={setOpenDeleteModal} resumeId={currentResume?._id} />
+            <View open={openViewModal} setOpen={setOpenViewModal} resume={currentResume} />
 
-                                    <div className="flex flex-wrap md:flex-row sm:flex-col gap-[1rem] w-full " >
-                                        {
-                                            resumes.resumes.map((resume, index) => (
-                                                <div key={index} className="xl:w-[32%] lg:w-[48%] md:w-[48%] sm:w-[80%] w-full " >
-                                                    {
-                                                        resume._id
-                                                            ?
-                                                            <ResumeCard resume={resume} />
-                                                            :
-                                                            <Loading title="Adding Card..." />
-                                                    }
-                                                </div>
-                                            ))
-                                        }
-                                    </div>
-                                    <div className="w-full flex justify-end items-center " >
-                                        <button onClick={() => addResumeFunc()} className="rounded-full bg-darkGray py-[4px] px-[12px] w-fit" >Add Resume</button>
-                                    </div>
+            <div className="flex flex-col gap-[2rem] " >
 
-                                </div>
-                            </div>
+                <Heading title="resumes" setOpen={setOpenCreateModal} />
 
-                            {/* buttons */}
-                            <div className="flex sm:flex-row flex-col " >
-                                <h6 className="capitalize lg:w-[20%] md:w-[25%] sm:w-[30%] w-full text-[18px] text-white " >buttons :</h6>
-                                <div className="flex flex-col gap-[1rem] lg:w-[80%] md:w-[75%] sm:w-[70%] w-full " >
-                                    <p className="text-[18px] text-textGray  " >{resumes.buttons.length}</p>
-                                    <div className="flex flex-wrap gap-[1rem] lg:flex-row md:flex-col sm:flex-col justify-start " >
-                                        {
-                                            resumes.buttons?.map((button, index) => (
-                                                <div key={index} className="xl:w-[32%] lg:w-[48%] md:w-[48%] sm:w-[80%] w-full" >
-                                                    {
-                                                        button._id
-                                                            ?
-                                                            <Button
-                                                                button={button}
-                                                                state={resumes}
-                                                                setState={setResumes}
-                                                                deleteButton={deleteButton}
-                                                                updateButton={updateButton}
-                                                            />
-                                                            :
-                                                            <Loading title="Adding Button..." />
-                                                    }
-                                                </div>
-                                            ))
-                                        }
-                                    </div>
-                                    <div className="w-full flex justify-end items-center " >
-                                        <button onClick={() => addBtn()} className="rounded-full bg-darkGray py-[4px] px-[12px] w-fit" >Add Button</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-            }
+                <div className="w-full flex flex-wrap md:flex-row sm:flex-col gap-[1rem] " >
+                    <Table
+                        rows={resumes}
+                        columns={columns}
+                        isFetching={isFetching}
+                        error={error}
+                        rowsPerPage={5}
+                    />
+                </div>
+
+            </div>
         </div>
     )
 }

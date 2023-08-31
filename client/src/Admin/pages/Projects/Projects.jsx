@@ -1,146 +1,85 @@
-
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from 'react-redux'
-
-import { Heading, Textarea, Error } from "../../components"
-import ProjectCard from './ProjectCard'
+import { Heading, Error, Table } from "../../components"
 import { Loading } from '../../../utils/Components'
-import { useStateContext } from '../../../contexts/ContextProvider'
-import { getProjectsContent, updateForwardHeading, updateBackHeading, updateDetail, addProject, deleteProject, createProjectsFirstDocument, deleteProjectsCollection } from '../../../store/actions/admin/projects'
+import { getProjects } from "../../../redux/actions/project"
+import Create from "./Create"
+import Update from "./Update"
+import Delete from "./Delete"
+import View from "./View"
+import { Delete as DeleteIcon, Edit, Visibility } from "@mui/icons-material"
+import { IconButton } from "@mui/material"
 
 const Projects = () => {
-    const { initialProjectsState, projects, setProjects } = useStateContext()
 
     /////////////////////////////////////////////////////////////// VARIABLES ///////////////////////////////////////////////////////////////////////
     const dispatch = useDispatch()
-    const { result, isLoading, isError, error } = useSelector(state => state.projects)
+    const { projects, isFetching, error } = useSelector(state => state.project)
+    const columns = [
+        { field: '_id', headerName: 'ID', width: 90 },
+        { field: 'image', headerName: 'Image', width: 150, renderCell: (params) => (<img src={params.row.image} alt={params.row.title} className="w-[2rem] h-[2rem] rounded-full object-cover " />) },
+        { field: 'title', headerName: 'Title', width: 150, },
+        { field: 'detail', headerName: 'detail', width: 200, },
+        { field: 'link', headerName: 'Link', width: 100, },
+        { field: 'github', headerName: 'Github', width: 100, },
+        {
+            field: 'technologies', headerName: 'Technologies', width: 150, renderCell: (params) => (
+                <>{params.row.technologies.map((tech, index) => <span key={index} >#{tech} </span>)}</>
+            )
+        },
+        {
+            field: 'action', headerName: 'Action', width: 160, renderCell: (params) => (
+                <div className="flex  ">
+                    <IconButton onClick={() => { setOpenViewModal(true); setCurrentProject(params.row) }} ><Visibility /></IconButton>
+                    <IconButton onClick={() => { setOpenUpdateModal(true); setCurrentProject(params.row) }} ><Edit /></IconButton>
+                    <IconButton onClick={() => { setOpenDeleteModal(true); setCurrentProject(params.row) }} ><DeleteIcon /></IconButton>
+                </div>
+            )
+        },
+    ];
 
     /////////////////////////////////////////////////////////////// STATES //////////////////////////////////////////////////////////////////////////
+    const [openCreateModal, setOpenCreateModal] = useState(false)
+    const [openViewModal, setOpenViewModal] = useState(false)
+    const [openUpdateModal, setOpenUpdateModal] = useState(false)
+    const [openDeleteModal, setOpenDeleteModal] = useState(false)
+    const [currentProject, setCurrentProject] = useState(null)
 
     /////////////////////////////////////////////////////////////// USE EFFECTS /////////////////////////////////////////////////////////////////////
     useEffect(() => {
-        dispatch(getProjectsContent())
+        dispatch(getProjects())
     }, [])
-    useEffect(() => {
-        setProjects({ ...projects, ...result })
-    }, [result])
 
     /////////////////////////////////////////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////
-    // 1)
-    const changeForwardHeading = (text) => {
-        projects.forwardHeading = text
-        dispatch(updateForwardHeading(text))
-        setProjects({ ...projects })
-    }
-    // 2)
-    const changeBackHeading = (text) => {
-        projects.backHeading = text
-        dispatch(updateBackHeading(text))
-        setProjects({ ...projects })
-    }
-    // 3)
-    const changeDetail = (text) => {
-        projects.detail = text
-        dispatch(updateDetail(text))
-        setProjects({ ...projects })
-    }
-    // 4)
-    const addProjectFunc = () => {
-        const projectData = {
-            title: 'title',
-            technologies: ['react js'],
-            link: 'http:www.link.com',
-            github: 'http:www.github.com/github-link',
-            detail: 'lorem ipsum dolar lorem ipsum dolar lorem ipsum dolar lorem ipsum dolar',
-            images: []
-        }
-        projects.projects = projects.projects.concat({ ...projectData, _id: '' })
-        dispatch(addProject(projectData))
-        setProjects({ ...projects })
-    }
-    // 5)
-    const createProjectsSection = () => {
-        dispatch(createProjectsFirstDocument())
-    }
 
-    if (isLoading) return <Loading />
-    if (isError) return <Error error={error?.message} />
+    if (isFetching) return <Loading />
+    if (error) return <Error error={error} />
 
     return (
         <div className="w-full h-full "  >
-            {
-                result.projectsDocumentNotExist
-                    ?
-                    <div className="w-full h-full flex justify-center items-center  " >
-                        <button onClick={createProjectsSection} className="bg-orange px-[24px] py-[12px] rounded-[24px] " >Create Projects Section</button>
-                    </div>
-                    :
-                    <div className="flex flex-col gap-[2rem] " >
-                        <Heading
-                            title="projects"
-                            deleteSection={deleteProjectsCollection}
-                            initialState={initialProjectsState}
-                            state={projects}
-                            setState={setProjects}
-                        />
-                        <div className="flex flex-col gap-[1rem] " >
 
-                            <Textarea
-                                heading='Fore Heading'
-                                placeholder='Type Here'
-                                attribute='forwardHeading'
-                                blurFunction={changeForwardHeading}
-                                state={projects}
-                                setState={setProjects}
-                            />
-                            <Textarea
-                                heading='Back Heading'
-                                placeholder='Type Here'
-                                attribute='backHeading'
-                                blurFunction={changeBackHeading}
-                                state={projects}
-                                setState={setProjects}
-                            />
-                            <Textarea
-                                heading='Detail'
-                                placeholder='Type Here'
-                                attribute='detail'
-                                blurFunction={changeDetail}
-                                state={projects}
-                                setState={setProjects}
-                            />
+            <Create open={openCreateModal} setOpen={setOpenCreateModal} />
+            <Update open={openUpdateModal} setOpen={setOpenUpdateModal} project={currentProject} />
+            <Delete open={openDeleteModal} setOpen={setOpenDeleteModal} projectId={currentProject?._id} />
+            <View open={openViewModal} setOpen={setOpenViewModal} project={currentProject} />
 
-                            {/* project cards */}
-                            <div className="flex sm:flex-row flex-col " >
-                                <h6 className="capitalize lg:w-[20%] md:w-[25%] sm:w-[30%] w-[30%] text-[18px] text-white " >projects :</h6>
-                                <div className="flex flex-col gap-[1rem] lg:w-[80%] md:w-[75%] sm:w-[70%] w-full " >
-                                    <p className="capitalize  text-[18px] text-white  " >{projects.projects.length}</p>
-                                    <div className="flex flex-wrap md:flex-row sm:flex-col gap-[1rem] w-full " >
-                                        {
-                                            projects.projects.map((project, index) => (
-                                                <div key={index} className="xl:w-[32%] lg:w-[48%] md:w-[48%] sm:w-[80%] w-full " >
-                                                    {
-                                                        project._id
-                                                            ?
-                                                            <ProjectCard project={project} />
-                                                            :
-                                                            <Loading title="Adding Card..." />
-                                                    }
-                                                </div>
-                                            ))
-                                        }
-                                    </div>
-                                    <div className="w-full flex justify-end items-center " >
-                                        <button onClick={() => addProjectFunc()} className="rounded-full bg-darkGray py-[4px] px-[12px] w-fit" >Add Project</button>
-                                    </div>
+            <div className="flex flex-col gap-[2rem] " >
 
-                                </div>
-                            </div>
+                <Heading title="projects" setOpen={setOpenCreateModal} />
 
-                        </div>
-                    </div>
-            }
+                <div className="w-full flex flex-wrap md:flex-row sm:flex-col gap-[1rem] " >
+                    <Table
+                        rows={projects}
+                        columns={columns}
+                        isFetching={isFetching}
+                        error={error}
+                        rowsPerPage={5}
+                    />
+                </div>
+
+            </div>
         </div>
     )
 }
+
 export default Projects

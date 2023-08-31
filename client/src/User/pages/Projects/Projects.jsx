@@ -2,15 +2,23 @@ import { motion } from "framer-motion"
 
 import { MainHeading } from "../../components"
 import ProjectCard from './ProjectCard'
+import { useDispatch, useSelector } from "react-redux"
+import { useEffect } from "react"
+import { getProjects } from "../../../redux/actions/project"
 
 
-const Projects = ({ content }) => {
+const Projects = () => {
 
     /////////////////////////////////////////////////////////////// VARIABLES ///////////////////////////////////////////////////////////////////////
+    const dispatch = useDispatch()
+    const { projects } = useSelector(state => state.project)
 
     /////////////////////////////////////////////////////////////// STATES //////////////////////////////////////////////////////////////////////////
 
     /////////////////////////////////////////////////////////////// USE EFFECTS /////////////////////////////////////////////////////////////////////
+    useEffect(() => {
+        dispatch(getProjects())
+    }, [])
 
     /////////////////////////////////////////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////
 
@@ -27,15 +35,15 @@ const Projects = ({ content }) => {
 
             <div className="w-full flex justify-center" >
                 <MainHeading
-                    forwardHeading={content?.forwardHeading}
-                    backHeading={content?.backHeading}
-                    detail={content?.detail}
+                    forwardHeading='Projects'
+                    backHeading='Projects'
+                    detail='Transforming complex ideas into functional and intuitive web solutions that address unique needs and exceed user expectations with the latest web technologies and frameworks'
                 />
             </div>
 
             <div className="flex flex-wrap md:justify-center justify-center gap-[8px] mt-[3rem] " >
                 {
-                    content?.projects.map((project, index) => (
+                    projects.map((project, index) => (
                         <ProjectCard project={project} index={index} key={index} />
                     ))
                 }

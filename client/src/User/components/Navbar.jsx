@@ -5,24 +5,37 @@ import { IconButton } from "@mui/material"
 import { Link } from "react-scroll"
 import { useState } from "react"
 import { motion } from 'framer-motion'
+import { useSelector } from 'react-redux'
 
-import { logout } from '../../store/actions/user/user'
+import { logout } from '../../redux/actions/user'
+import Button from './Button'
 import { useStateContext } from "../../contexts/ContextProvider"
 
+const Navbar = ({ navbarMenuRef, showMenu, setShowMenu }) => {
 
-const Navbar = ({ content, navbarMenuRef, showMenu, setShowMenu }) => {
-
-    const { isMainAdmin, isAdmin, isAuthenticatedUser, user, setUser, setPage, setMode, setUserFormData, initialUserState, initialErrorObj, setErrorObj } = useStateContext()
+    const { setMode, setUserFormData, initialUserState, initialErrorObj, setErrorObj } = useStateContext()
     /////////////////////////////////////////////////////////////// VARIABLES ///////////////////////////////////////////////////////////////////////
     const location = useLocation()
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const { loggedUser } = useSelector(state => state.user)
+    const navLinks = [
+        "home",
+        "about",
+        "services",
+        "skills",
+        "projects",
+        "blogs",
+        "testimonials",
+        "contact",
+    ]
 
     /////////////////////////////////////////////////////////////// STATES //////////////////////////////////////////////////////////////////////////
     const [showNavbar, setShowNavbar] = useState(false)
     const [showAccountMenu, setShowAccountMenu] = useState(false)
 
     /////////////////////////////////////////////////////////////// USE EFFECTS /////////////////////////////////////////////////////////////////////
+
 
     /////////////////////////////////////////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////
     // 1)
@@ -35,15 +48,13 @@ const Navbar = ({ content, navbarMenuRef, showMenu, setShowMenu }) => {
     }
     // 2)
     const navigateToRegister = () => {
-        navigate('/auth')
-        setPage('register')
+        navigate('/auth/register')
         setUserFormData(initialUserState)
         setErrorObj(initialErrorObj)
     }
     // 3)
     const navigateToLogin = () => {
-        navigate('/auth')
-        setPage('login')
+        navigate('/auth/login')
         setUserFormData(initialUserState)
         setErrorObj(initialErrorObj)
     }
@@ -61,7 +72,7 @@ const Navbar = ({ content, navbarMenuRef, showMenu, setShowMenu }) => {
     }
     // 6)
     const logoutFunc = () => {
-        dispatch(logout(user?.email, navigate, setUser))
+        dispatch(logout(navigate))
         setShowMenu(false)
     }
 
@@ -74,47 +85,38 @@ const Navbar = ({ content, navbarMenuRef, showMenu, setShowMenu }) => {
             <nav className="lg:flex lg:flex-col hidden justify-between min-h-[5rem] items-center bg-black text-white border-b-[1px] border-darkGray  " >
                 <div className="w-full flex justify-between items-center py-[20px] px-[4rem] " >
                     <Link to="home" className="" >
-                        {
-                            content?.logo?.logoImage?.url
-                                ?
-                                <img src={content?.logo?.logoImage?.url} alt='Nauman' className='w-[40px] ' />
-                                :
-                                <h3 onClick={() => { navigate('/') }} style={{ fontFamily: 'cursive' }} className=" text-3xl font-bold cursor-pointer text-orange " >{content?.logo?.logoText}</h3>
-                        }
+                        <h3 style={{ fontFamily: 'cursive' }} className=" text-3xl font-bold cursor-pointer text-orange " >Nauman</h3>
                     </Link>
                     {/* navLinks */}
-                    {
-                        location.pathname !== '/auth' &&
-                        <div className="flex justify-center items-center gap-[1rem] " >
-                            {
-                                content?.navLinks.map((link, index) => (
-                                    <div key={index} className="flex flex-col justify-center items-center w-auto " >
-                                        <Link
-                                            id="link"
-                                            to={link.link}
-                                            activeClass="active"   //class applied when element is reached
-                                            smooth={true}
-                                            spy={true}
-                                            offset={-100}
-                                            duration={300}
-                                            className="text-light-white cursor-pointer text-[1rem] hover:text-[#938f8e] hover:scale-110 duration-500 "
-                                        >
-                                            {link.name}
-                                        </Link>
-                                    </div>
-                                ))
-                            }
-                        </div>
-                    }
+                    <div className="flex justify-center items-center gap-[1rem] " >
+                        {
+                            navLinks.map((link, index) => (
+                                <div key={index} className="flex flex-col justify-center items-center w-auto " >
+                                    <Link
+                                        id="link"
+                                        to={`/${link.toLowerCase()}`}
+                                        activeClass="active"   //class applied when element is reached
+                                        smooth={true}
+                                        spy={true}
+                                        offset={-100}
+                                        duration={300}
+                                        className="text-light-white cursor-pointer text-[1rem] hover:text-[#938f8e] hover:scale-110 duration-500 "
+                                    >
+                                        {link.name}
+                                    </Link>
+                                </div>
+                            ))
+                        }
+                    </div>
                     {/* account/signup/login */}
                     <div className="flex justify-between  " >
                         {
-                            user
+                            loggedUser
                                 ?
                                 <div className="flex items-center gap-[1rem] " >
-                                    <p className="text-[24px] capitalize " >{user?.name?.split(' ')[0]}</p>
+                                    <p className="text-[24px] capitalize " >{loggedUser?.name?.split(' ')[0]}</p>
                                     <div className="relative  " >
-                                        <span onClick={() => { setShowMenu(pre => !pre); }} className="flex justify-center items-center bg-orange rounded-[50%] w-[40px] h-[40px] text-[24px] capitalize cursor-pointer " >{user?.name?.charAt(0)}</span>
+                                        <span onClick={() => { setShowMenu(pre => !pre); }} className="flex justify-center items-center bg-orange rounded-[50%] w-[40px] h-[40px] text-[24px] capitalize cursor-pointer " >{loggedUser?.name?.charAt(0)}</span>
                                         {
                                             showMenu &&
                                             <motion.div
@@ -123,19 +125,16 @@ const Navbar = ({ content, navbarMenuRef, showMenu, setShowMenu }) => {
                                                 className="absolute top-[120%] right-[50%] border-[1px] border-white bg-lightGray p-[12px] gap-[8px] rounded-[4px] flex flex-col  "
                                             >
                                                 <button onClick={navigateToAccount} className="flex gap-[8px] w-full min-w-max hover:bg-darkGray p-[6px] rounded-[4px] " ><Person className="" />Account</button>
-                                                {
-                                                    (isAdmin || isMainAdmin) &&
-                                                    <button onClick={switchMode} className="flex gap-[8px] w-full min-w-max hover:bg-darkGray p-[6px] rounded-[4px] " ><SwitchLeftOutlined className="" />Switch Mode</button>
-                                                }
+                                                {loggedUser.role == 'admin' && <button onClick={switchMode} className="flex gap-[8px] w-full min-w-max hover:bg-darkGray p-[6px] rounded-[4px] " ><SwitchLeftOutlined className="" />Switch Mode</button>}
                                                 <button onClick={logoutFunc} className="flex gap-[8px] w-full min-w-max hover:bg-darkGray p-[6px] rounded-[4px] " ><SwitchLeftOutlined className="" />Logout</button>
                                             </motion.div>
                                         }
                                     </div>
                                 </div>
                                 :
-                                <div className="flex gap-[8px] " >
-                                    <button onClick={navigateToLogin} className="cursor-pointer capitalize text-[20px] px-[20px] py-[4px] rounded-[8px] text-white border-[1px] border-white " >login</button>
-                                    <button onClick={navigateToRegister} className="cursor-pointer capitalize text-[20px] px-[20px] py-[4px] rounded-[8px] bg-orange text-black border-[1px] border-white font-light " >Register</button>
+                                <div className="flex gap-[1rem] " >
+                                    <Button onClick={navigateToLogin} background='black' color='white' border='white' text='Login' />
+                                    <Button onClick={navigateToRegister} background='orange' color='white' text='Register' />
                                 </div>
                         }
                     </div>
@@ -153,24 +152,22 @@ const Navbar = ({ content, navbarMenuRef, showMenu, setShowMenu }) => {
 
 
 
+
+
+
+
+
             {/* mobile navbar */}
             <div className="flex lg:hidden w-full bg-black flex-col items-end sticky top-0 left-0 z-50 px-[2rem] py-[12px] " >
                 <div className="flex justify-between w-full items-center " >
                     <Link to="home" className="" >
-                        {
-                            content?.logo?.logoImage?.url
-                                ?
-                                <img src={content?.logo?.logoImage?.url} alt='Nauman' className='w-[40px] ' />
-                                :
-                                <h3 onClick={() => { navigate('/') }} style={{ fontFamily: 'cursive' }} className=" text-3xl font-bold cursor-pointer text-orange " >{content?.logo?.logoText}</h3>
-                        }
+                        <h3 onClick={() => navigate('/')} style={{ fontFamily: 'cursive' }} className=" text-3xl font-bold cursor-pointer text-orange " >Nauman</h3>
                     </Link>
                     <div className='' >
-
                         {
-                            user
+                            loggedUser
                                 ?
-                                <p className="text-[18px] capitalize ">{user?.name?.split(' ')[0]}</p>
+                                <p className="text-[18px] capitalize ">{loggedUser?.name?.split(' ')[0]}</p>
                                 :
                                 <IconButton onClick={toggleShowAccountMenu} >
                                     <Person className="text-white text-4 " />
@@ -208,7 +205,7 @@ const Navbar = ({ content, navbarMenuRef, showMenu, setShowMenu }) => {
                         </button>
                         <div className='flex flex-col justify-start gap-[1rem] w-full ' >
                             {
-                                content?.navLinks.map((link, index) => (
+                                navLinks.map((link, index) => (
                                     <div key={index} className="flex flex-col items-start justify-start w-full " >
                                         <Link
                                             id="link"
@@ -231,7 +228,7 @@ const Navbar = ({ content, navbarMenuRef, showMenu, setShowMenu }) => {
                                 <Person className="" /><p>Account</p>
                             </button>
                             {
-                                user &&
+                                loggedUser &&
                                 <button onClick={() => { setMode('admin'); toggleShowNavbar() }} className="flex justify-start items-center gap-[8px] text-[1rem] px-4 hover:text-orange hover:scale-110 duration-500" >
                                     <SwitchLeftOutlined className="" /><p>Switch Mode</p>
                                 </button>

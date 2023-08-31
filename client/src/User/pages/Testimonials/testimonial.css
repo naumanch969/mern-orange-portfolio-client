@@ -1,0 +1,108 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* html,
+body {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #111;
+} */
+
+/* body {
+    background: #eee;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #000;
+    margin: 0;
+    padding: 0;
+} */
+
+.testimonials {
+    position: relative;
+    max-width: 100%;
+    -webkit-box-reflect: below 1px linear-gradient(transparent 70%, #0009);
+}
+
+.swiper-slide {
+    background-position: center;
+    background-size: cover;
+    width: 350px;
+    min-height: 300px;
+    margin: 0 20px;
+    background: #fff;
+
+}
+
+.swiper-container-3d .swiper-slide-shadow-left .swiper-container-3d .swiper-slide-shadow-left {
+    background-image: none;
+}
+
+.testimonials .card {
+    position: relative;
+    width: 100%;
+    margin: 0 20px;
+    background: #333;
+    padding: 60px 40px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.testimonials .card .layer {
+    position: absolute;
+    top: calc(100% - 2px);
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(#03a9f4, #e91ee3);
+    z-index: 1;
+    transition: 0.5s;
+}
+
+.testimonials .card:hover .layer {
+    top: 0;
+}
+
+.testimonials .card .content {
+    position: relative;
+    z-index: 2;
+}
+
+.testimonials .card .content p {
+    font-size: 18px;
+    line-height: 24px;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.testimonials .card .content .imgBx {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 10px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #fff;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+.testimonials .card .content h2 {
+    font-size: 18px;
+    color: #fff;
+}
+
+.testimonials .card .content h2 span {
+    color: #03a9f4;
+    font-size: 14px;
+    transition: 0.5s;
+}
+
+.testimonials .card:hover .content h2 span {
+    color: #fff;
+}

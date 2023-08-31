@@ -7,19 +7,25 @@ import { EffectCoverflow, Pagination } from "swiper";
 
 import { MainHeading } from "../../components"
 import TestimonialsCard from './TestimonialsCard'
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getTestimonials } from "../../../redux/actions/testimonial";
 
-const Testimonials = ({ content }) => {
+import './testimonial.css'
+
+const Testimonials = () => {
 
     /////////////////////////////////////////////////////////////// VARIABLES ///////////////////////////////////////////////////////////////////////
-    const styles = `
-    .swiper-slide {
-     width:300px
-    }
-  `;
+    const styles = `.swiper-slide {width:300px}`;
+    const dispatch = useDispatch()
+    const { testimonials } = useSelector(state => state.testimonial)
 
     /////////////////////////////////////////////////////////////// STATES //////////////////////////////////////////////////////////////////////////
 
     /////////////////////////////////////////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////
+    useEffect(() => {
+        dispatch(getTestimonials())
+    }, [])
 
     /////////////////////////////////////////////////////////////// USE EFFECTS /////////////////////////////////////////////////////////////////////
 
@@ -38,10 +44,45 @@ const Testimonials = ({ content }) => {
 
                 <div className="w-full flex justify-center " >
                     <MainHeading
-                        forwardHeading={content?.forwardHeading}
-                        backHeading={content?.backHeading}
-                        detail={content?.detail}
+                        forwardHeading='Testimonials'
+                        backHeading='Testimonials'
+                        detail='See what my satisfied clients have to say about my services. Partner with me to bring your web projects to life!'
                     />
+                </div>
+
+
+                <div className="testimonials">
+                    <Swiper
+                        effect={'coverflow'}
+                        grabCursor={true}
+                        centeredSlides={true}
+                        slidesPerView={'auto'}
+                        coverflowEffect={{
+                            rotate: 0,
+                            stretch: 0,
+                            depth: 0,
+                            modifier: 1,
+                            slideShadows: true,
+                        }}
+                        loop={true}
+                        modules={[EffectCoverflow]}
+                        className="mySwiper"
+                    >
+                        <SwiperSlide>
+                            <div className="card">
+                                <div className="layer"></div>
+                                <div className="content">
+                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, deleniti? Saepe iste aliquid sunt corporis fuga iusto odio suscipit architecto, culpa harum alias.</p>
+                                    <div className="imgBx">
+                                        <img src="https://swiperjs.com/demos/images/nature-2.jpg" />
+                                    </div>
+                                    <div className="details">
+                                        <h2>Someone Famous <br /> <span>Website Designer</span> </h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </SwiperSlide>
+                    </Swiper>
                 </div>
 
 
@@ -62,13 +103,13 @@ const Testimonials = ({ content }) => {
                     className="w-full py-[50px] "
                 >
                     {
-                        content?.testimonials.map((testimonial, index) => (
+                        testimonials.map((testimonial, index) => (
                             <SwiperSlide key={index} className="w-[300px] " >
                                 <TestimonialsCard
                                     content={testimonial.content}
                                     name={testimonial.name}
                                     designation={testimonial.designation}
-                                    image={testimonial.image.url}
+                                    image={testimonial.image}
                                 />
                             </SwiperSlide>
                         ))

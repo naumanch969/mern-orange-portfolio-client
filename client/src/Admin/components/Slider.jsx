@@ -1,10 +1,10 @@
-import { useStateContext } from "../../contexts/ContextProvider"
 import { Loading } from './'
 import FileBase64 from 'react-file-base64'
 import { ArrowLeft, Camera, ArrowRight, Add, Delete } from '@mui/icons-material'
 import { useState, useEffect, useRef } from 'react'
 
 const Slider = ({ images, deleteImageFunc, addImageFunc, sliderInModal, subFreelancingCardId }) => {
+
     const imagesLength = images.length
     /////////////////////////////////////////////////////////////// VARIABLES ///////////////////////////////////////////////////////////////////////
     const fileBase64Ref = useRef(null)
@@ -70,7 +70,7 @@ const Slider = ({ images, deleteImageFunc, addImageFunc, sliderInModal, subFreel
                         <button onClick={deleteImage} className="absolute bottom-[4px] right-[4px] text-white   " ><Delete /></button>
                     </>
                 }
-                <img src={images[currentImageIndex]?.url} alt='' className="w-full h-full " />
+                <img src={images[currentImageIndex]} alt='' className="w-full h-full " />
             </div>
             {images.length > 1 && <button onClick={nextImage} className="cursor-pointer absolute transform translate-y-[-100%] top-[50%] right-0 " ><ArrowRight style={{ fontSize: '30px' }} className="text-black text-[30px] " /></button>}
         </div>

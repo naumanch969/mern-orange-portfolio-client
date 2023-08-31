@@ -5,10 +5,14 @@ import { motion } from "framer-motion"
 import { MainHeading } from "../../components"
 import ContactCard from './ContactCard'
 import ContactForm from './ContactForm'
+import { useDispatch, useSelector } from "react-redux"
+import { } from '../../../redux/actions/contact'
 
-const Contact = ({ content }) => {
+const Contact = () => {
 
     /////////////////////////////////////////////////////////////// VARIABLES ///////////////////////////////////////////////////////////////////////
+    const dispatch = useDispatch()
+    const { cards } = useSelector(state => state.contact)
 
     /////////////////////////////////////////////////////////////// STATES //////////////////////////////////////////////////////////////////////////
 
@@ -29,9 +33,9 @@ const Contact = ({ content }) => {
             {/* contact main heading */}
             <div className="w-full flex justify-center " >
                 <MainHeading
-                    forwardHeading={content?.forwardHeading}
-                    backHeading={content?.backHeading}
-                    detail={content?.detail}
+                    forwardHeading='Contact'
+                    backHeading='Contact'
+                    detail="Excited to discuss your web project and help you achieve your goals! Let's connect and explore how my expertise can bring your vision to reality. Feel free to reach out to me today and let's collaborate on your web success!"
                 />
             </div>
 
@@ -39,7 +43,7 @@ const Contact = ({ content }) => {
             <div className="w-full flex justify-center " >
                 <div className="flex lg:justify-around sm:justify-center mt-[2rem] flex-wrap gap-[2rem] md:w-full sm:w-[80%] w-[90%]" >
                     {
-                        content?.cards.map((card, index) => (
+                        cards?.map((card, index) => (
                             <ContactCard key={index} card={card} />
                         ))
                     }
@@ -48,7 +52,7 @@ const Contact = ({ content }) => {
 
             {/* contact form */}
             <div className="w-full flex justify-center  " >
-                {content && <ContactForm content={content} />}
+                <ContactForm />
             </div>
 
         </motion.section>

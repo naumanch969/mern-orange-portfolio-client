@@ -3,23 +3,18 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from "react-router-dom"
-
 import { Provider } from "react-redux"
-import { createStore, applyMiddleware, compose } from "redux"
-import reducers from './store/reducers'
-import thunk from "redux-thunk"
-
+import { store } from './redux/store'
 import { ContextProvider } from "./contexts/ContextProvider"
-
-
-const store = createStore(reducers, compose(applyMiddleware(thunk)))
+import Hover from './utils/Hover/Hover';
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>      {/* react-redux */}
     <ContextProvider>             {/* context-api */}
       <BrowserRouter>         {/* react-router-dom */}
-        <App />
+        {/* <App /> */}
+        <Hover />
       </BrowserRouter>
     </ContextProvider>
   </Provider>

@@ -2,14 +2,22 @@ import { motion } from "framer-motion"
 
 import { MainHeading } from "../../components"
 import Skillbar from './Skillbar'
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { getSkills } from '../../../redux/actions/skill'
 
-const Skills = ({ content }) => {
+const Skills = () => {
 
     /////////////////////////////////////////////////////////////// VARIABLES ///////////////////////////////////////////////////////////////////////
+    const dispatch = useDispatch()
+    const { skills } = useSelector(state => state.skill)
 
     /////////////////////////////////////////////////////////////// STATES //////////////////////////////////////////////////////////////////////////
 
     /////////////////////////////////////////////////////////////// USE EFFECTS /////////////////////////////////////////////////////////////////////
+    useEffect(() => {
+        dispatch(getSkills())
+    }, [])
 
     /////////////////////////////////////////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////
 
@@ -25,15 +33,15 @@ const Skills = ({ content }) => {
 
             <div className="w-full flex justify-center" >
                 <MainHeading
-                    forwardHeading={content?.forwardHeading}
-                    backHeading={content?.backHeading}
-                    detail={content?.detail}
+                    forwardHeading='Skills'
+                    backHeading='Skills'
+                    detail='With a strong foundation in the MERN stack and extensive experience with front-end and back-end technologies, I am committed to staying up-to-date with the latest web development trends to deliver cutting-edge solutions that meet and exceed client expectations'
                 />
             </div>
 
             <div className="flex flex-wrap justify-center items-center gap-[2rem] mt-[3rem] " >
                 {
-                    content?.skills.map((skill, index) => (
+                    skills.map((skill, index) => (
                         <Skillbar key={index} skill={skill} />
                     ))
                 }
