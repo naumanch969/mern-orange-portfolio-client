@@ -80,43 +80,51 @@ const ContactForm = () => {
 
 
     return (
-        <div className="flex h-[560px] mt-[7rem] md:flex-row flex-col md:w-full sm:w-[80%] w-[90%] rounded-[20px] " >
+        <div className="flex h-[660px] mt-[3rem] md:flex-row flex-col md:w-full sm:w-[80%] w-[90%] rounded-[20px] " >
             <div className="md:w-[50%] w-full h-full  bg-darkGray flex justify-center items-center " >
                 <img src={profile} alt="contact form image" className="w-[80%] h-full bg-darkGray" />
             </div>
             {/* form */}
             <form method='POST' className="flex justify-between items-start flex-col gap-[2rem] w-full md:w-[50%] h-full bg-white p-[2rem] " >
                 <Input
+                    light   // for light mode (bg white text black)
+                    label='Name'
                     attribute="name"
                     type="text"
-                    placeholder="Your Name"
+                    placeholder="Your name here"
                     blurFunction={nameBlur}
                     formData={contactData}
                     setFormData={setContactData}
                     validationMessage={contactValidationMessage}
                 />
                 <Input
+                    light   // for light mode (bg white text black)
+                    label='Email'
                     attribute="email"
                     type="text"
-                    placeholder="Your Email"
+                    placeholder="email@example.com"
                     blurFunction={emailBlur}
                     formData={contactData}
                     setFormData={setContactData}
                     validationMessage={contactValidationMessage}
                 />
                 <Input
+                    light   // for light mode (bg white text black)
+                    label='Subject'
                     attribute="subject"
                     type="text"
-                    placeholder="Subject"
+                    placeholder="Your subject here"
                     blurFunction={subjectBlur}
                     formData={contactData}
                     setFormData={setContactData}
                     validationMessage={contactValidationMessage}
                 />
                 <Input
+                    light   // for light mode (bg white text black)
+                    label='Message'
                     attribute="message"
                     type="text"
-                    placeholder="Message"
+                    placeholder="Your message here"
                     blurFunction={messageBlur}
                     formData={contactData}
                     setFormData={setContactData}

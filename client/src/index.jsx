@@ -6,15 +6,15 @@ import { BrowserRouter } from "react-router-dom"
 import { Provider } from "react-redux"
 import { store } from './redux/store'
 import { ContextProvider } from "./contexts/ContextProvider"
-import Hover from './utils/Hover/Hover';
+// import Hover from './utils/Hover/Hover';
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>      {/* react-redux */}
     <ContextProvider>             {/* context-api */}
       <BrowserRouter>         {/* react-router-dom */}
-        {/* <App /> */}
-        <Hover />
+        <App />
+        {/* <Hover /> */}
       </BrowserRouter>
     </ContextProvider>
   </Provider>

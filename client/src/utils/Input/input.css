@@ -1,0 +1,4 @@
+.inputBox input:focus~label,
+textarea:valid~label {
+     transform: translateX(0px) translateY(-34px);
+}

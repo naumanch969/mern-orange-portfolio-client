@@ -2,9 +2,9 @@ import { motion } from "framer-motion"
 import ServiceCard from './ServiceCard'
 import { MainHeading } from "../../components"
 import { useEffect } from "react"
+import './service.css'
 import { useDispatch, useSelector } from "react-redux"
 import { getServices } from '../../../redux/actions/service'
-import Service from './service'
 
 const Services = () => {
 
@@ -30,22 +30,24 @@ const Services = () => {
                 <MainHeading
                     forwardHeading='Services'
                     backHeading='Services'
-                    detail='Empowering through innovation. Our services are designed to transform ideas into impactful solutions, creating a bridge between vision and reality.'
+                    detail='Empowering through innovation. My services are designed to transform ideas into impactful solutions, creating a bridge between vision and reality.'
                 />
             </div>
 
-
-            <div className="flex flex-wrap md:justify-start justify-center gap-[24px] mt-[3rem] " >
-                {/* {
+            <div className="container relative flex flex-wrap md:justify-start justify-center gap-[24px] mt-[3rem] " >
+                {
                     services.map((service, index) => (
-                        <ServiceCard
-                            key={index}
-                            service={service}
-                            index={index}
-                        />
+                        <>
+                            {console.log(service)}
+                            <ServiceCard
+                                key={index}
+                                service={service}
+                                index={index}
+                            />
+                        </>
                     ))
-                } */}
-                <Service/>
+                }
+
             </div>
 
 

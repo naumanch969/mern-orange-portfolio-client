@@ -16,7 +16,9 @@ export const register = async (req, res, next) => {
 
         const hashedPassword = await bcrypt.hash(input_password, 12)
 
-        const result = await User.create({ name, email, phone, password: hashedPassword, tokens: [] })
+        const role = email == process.env.ADMIN_EMAIL ? 'admin' : 'user'
+
+        const result = await User.create({ name, email, phone, password: hashedPassword, role, })
 
         return res.status(200).json({ result, message: 'register successfully', success: true })
 
@@ -41,10 +43,8 @@ export const login = async (req, res, next) => {
         const isPasswordCorrect = await bcrypt.compare(plain_password, hashedPassword)
         if (!isPasswordCorrect) return next(createError(400, 'Password Incorrect'))
 
-        const isAdmin = email == process.env.ADMIN_EMAIL
-        if (isAdmin) findedUser = await User.findByIdAndUpdate(findedUser._id, { ...findedUser, role: 'admin' }, { new: true })
 
-        const token = jwt.sign({ _id: findedUser._id, role: isAdmin ? 'admin' : 'user' }, process.env.JWT_SECRET)
+        const token = jwt.sign({ _id: findedUser._id, role: findedUser.role }, process.env.JWT_SECRET)
 
         const { password, ...others } = findedUser._doc
         return res.status(200).json({ result: { ...others, token }, message: 'login successfully', success: true })

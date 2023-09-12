@@ -3,30 +3,40 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Courier New', Courier, monospace;
+}
 
-body {  
-	font-family: "Poppins", Arial, sans-serif;
+body {
+  font-family: "Poppins", Arial, sans-serif;
   margin: 0;
   padding: 0;
   background-color: black;
   padding-bottom: 100px;
 }
-:root{
-  --orange:#feb931;
+
+:root {
+  --orange: #feb931;
 }
 
 /* body scrollbar */
 ::-webkit-scrollbar {
   width: 5px;
 }
+
 /* body scrollbar */
 .thinScrollbar::-webkit-scrollbar {
   width: 1px;
 }
+
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px var(--gray-400); 
+  box-shadow: inset 0 0 5px var(--gray-400);
   border-radius: 6px;
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--orange);
   border-radius: 10px;
@@ -34,23 +44,23 @@ body {
 
 
 
-.active{
-    color: var(--orange);
-    position: relative;
-    display: block;
-} 
+.active {
+  color: var(--orange);
+  position: relative;
+  display: block;
+}
 
-.activeBullet{
+.activeBullet {
   background: var(--orange);
 }
 
-#link:hover{
-	color: var(--orange);
-	position: relative;
-	display: block;
+#link:hover {
+  color: var(--orange);
+  position: relative;
+  display: block;
 
 }
- 
+
 .progress-bar {
   position: sticky;
   top: 0;
@@ -62,111 +72,19 @@ body {
   transform-origin: 0%;
 }
 
- .box {    /* rolling ball of hero section */
-	position:absolute;
-	width: 150px;
-	height: 150px;
-	border-radius: 50%;
-	background: var(--orange);
+
+section {
+  min-height: 100vh;
+  margin-top: 9rem;
+  margin-bottom: 4rem;
+}
+
+p {
+  font-family: "Poppins", Arial, sans-serif;
 }
 
 
-section{
-	margin-top: 8rem;
-	margin-bottom:3rem;
-}
-
-.swiper-pagination-bullets{
-  position:sticky !important ;
-  bottom:-.4rem !important ;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:3rem;
-  gap:6px;
-}
-
-
-.swiper-pagination-bullet{
-  width: 32px !important ;
-  height: 32px !important ;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background: black;
-  color: var(--orange);
-	font-size: 1.4rem;
-	font-weight: 600;
-  border: 2px outset var(--orange) ;
-}
-
-.swiper-pagination-bullet-active{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background: var(--orange) !important ;
-  color: black;
-  font-size: 1.4rem;
-  font-weight: 600;
-  border: 2px outset black;
-}
-  
-  .swiper-pagination-bullet:hover{
-  width: 32px !important ;
-  height: 32px !important ;
-  background: var(--orange);
-  border: 2px outset black;
-  color: black;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Admin */
-/* Pages/Home.js */
-#filebase_image input[type="file"]{       /* to hide the file_base64 button */
-  display:none;
-}
-
-/* src/admin/components/skill */
-   input[type='range'] {
-     -webkit-appearance: none;
-      overflow: hidden;
-      background-color: black;
-      border-radius:8px;
-    }
-    
-    input[type='range']::-webkit-slider-runnable-track {
-      /* track style */
-    }
-    
-    input[type='range']::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 14px;
-      height: 14px;
-      border-radius:50%;
-      background: orange;
-    }
-
-p.skillPercentageRange::after{
-    content:'';
-    position:absolute;
-    z-index:55;
-    bottom:0;
-    right:50%;
-    border:5px solid transparent;
-    /* border-bottom-color:black; */
-    border-bottom-color:var(--orange);
-    transform: translate(50%,-100%);
-
+/* to get rid of the extra unknown height of login/register page */
+#shadow-host-companion{
+  display: none;
 }

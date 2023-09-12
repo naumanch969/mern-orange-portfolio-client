@@ -4,8 +4,6 @@ import { useRef, useState } from 'react'
 import { deleteImage, uploadImage } from '../redux/actions/general'
 import { useDispatch, useSelector } from 'react-redux'
 
-
-
 export const Error = ({ error }) => {
     return (
         <div className="w-full h-full flex flex-col justify-center items-center " >

@@ -11,23 +11,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getTestimonials } from "../../../redux/actions/testimonial";
 
-import './testimonial.css'
+import './swiper.css'
 
 const Testimonials = () => {
 
-    /////////////////////////////////////////////////////////////// VARIABLES ///////////////////////////////////////////////////////////////////////
+    ////////////////////////////// VARIABLES //////////////////////////////////////
     const styles = `.swiper-slide {width:300px}`;
     const dispatch = useDispatch()
     const { testimonials } = useSelector(state => state.testimonial)
 
-    /////////////////////////////////////////////////////////////// STATES //////////////////////////////////////////////////////////////////////////
+    ////////////////////////////// STATES /////////////////////////////////////////
 
-    /////////////////////////////////////////////////////////////// FUNCTIONS ////////////////////////////////////////////////////////////////////////
+    ////////////////////////////// FUNCTIONS ///////////////////////////////////////
     useEffect(() => {
         dispatch(getTestimonials())
     }, [])
 
-    /////////////////////////////////////////////////////////////// USE EFFECTS /////////////////////////////////////////////////////////////////////
+    ////////////////////////////// USE EFFECTS ////////////////////////////////////
 
 
     return (
@@ -39,18 +39,19 @@ const Testimonials = () => {
                 animate={{ y: [0, 1] }}
                 transition={{ duration: .3, delayChildren: .5 }}
                 name="testimonials"
-                className="flex flex-col "
+                className="flex flex-col mb-[10rem] "
             >
 
                 <div className="w-full flex justify-center " >
                     <MainHeading
-                        forwardHeading='Testimonials'
-                        backHeading='Testimonials'
+                        forwardHeading='testimonials'
+                        small
+                        backHeading='testimonials'
                         detail='See what my satisfied clients have to say about my services. Partner with me to bring your web projects to life!'
                     />
                 </div>
 
-
+{/* 
                 <div className="testimonials">
                     <Swiper
                         effect={'coverflow'}
@@ -83,7 +84,7 @@ const Testimonials = () => {
                             </div>
                         </SwiperSlide>
                     </Swiper>
-                </div>
+                </div> */}
 
 
                 <Swiper
@@ -92,7 +93,7 @@ const Testimonials = () => {
                     centeredSlides={true}
                     slidesPerView={"auto"}
                     coverflowEffect={{
-                        rotate: 50,
+                        rotate: 40,
                         stretch: 0,
                         depth: 100,
                         modifier: 1,

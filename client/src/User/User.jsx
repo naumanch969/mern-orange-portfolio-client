@@ -7,8 +7,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { Navbar, NavigationDots, SocialLinks } from "./components"
 import { Home, About, Resume, Services, Skills, Projects, Blogs, Freelancing, Testimonials, Contact, Footer, Account, Register, Login } from "./pages"
 import 'react-phone-number-input/style.css'
-import Button from "./components/Button/button";
-
+ 
 const User = () => {
 
     ////////////////////////////////////// VARIABLES ////////////////////////////////////
@@ -37,11 +36,7 @@ const User = () => {
         damping: 30,
         restDelta: 0.001
     });
-    // for scrolling ball
-    // const ref = useRef(null);
-    // const { x, y } = useFollowPointer(ref);
-
-
+ 
 
     const App = () => (
         <div onClick={pageClick} className="flex justify-between  " >
@@ -51,7 +46,7 @@ const User = () => {
             <div className="md:w-[90vw] w-screen sm:px-[1rem] lg:px-[5rem] md:px-[2rem]  " >
                 <Home />
                 <About />
-                <Resume />
+                {/* <Resume /> */}
                 <Services />
                 <Skills />
                 <Projects />
@@ -69,22 +64,19 @@ const User = () => {
 
 
     return (
-        <div className="bg-black " >
+        <div className="bg-black w-full h-full " >
 
-            {/* progress bar */}
             <motion.div className="progress-bar" style={{ scaleX }} />
-            {/* scrolling ball */}
-            {/* <motion.div ref={ref} className="box md:block hidden " animate={{ x, y }} transition={{ type: "spring", damping: 3, stiffness: 50, restDelta: 0.001 }} /> */}
 
 
             <Navbar navbarMenuRef={navbarMenuRef} showMenu={showMenu} setShowMenu={setShowMenu} />
-            <div className="min-h-screen flex justify-center items-center " >
+            <div style={{minHeight:'calc(100vh - 4rem)'}} className="flex justify-center items-center " >
                 <Routes>
                     <Route exact path='/auth/register' element={<Register />} />
                     <Route exact path='/auth/login' element={<Login />} />
                     <Route exact path='/account' element={<Account />} />
                     <Route path='/' element={<App />} />
-                    <Route path='/:anyOtherRoute' element={<Navigate replace to='/' />} />
+                    <Route path='/*' element={<Navigate replace to='/' />} />
                 </Routes>
             </div>
 

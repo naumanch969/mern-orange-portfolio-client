@@ -1,21 +1,8 @@
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-
 :root {
     --clr: #feb931;
+    --bg-gray: #2e2e2e;
+    --text-gray: #888;
 }
-
-/* 
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 1000vh;
-    background: #222
-} */
 
 .container {
     position: relative;
@@ -27,17 +14,7 @@ body {
     padding: 60px 0;
 }
 
-.container .box {
-    position: relative;
-    width: 300px;
-    height: 350px;
-    background-color: #2e2e2e;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.container .box::before {
+.container .swiper_card::before {
     content: '';
     position: absolute;
     inset: -10px 50px;
@@ -48,28 +25,28 @@ body {
     transition: 0.5s ease-in-out;
 }
 
-.container .box:hover::before {
+.container .swiper_card:hover::before {
     transform: skewY(0deg);
     inset: -10px 40px;
 }
 
-.container .box::after {
+.container .swiper_card::after {
     content: '';
     position: absolute;
     inset: 60px -10px;
     border-left: 4px solid var(--clr);
     border-right: 4px solid var(--clr);
     z-index: -1;
-    transform: skew(10deg);
+    transform: skewX(10deg);
     transition: 0.5s ease-in-out;
 }
 
-.container .box:hover::after {
-    transform: skew(0deg);
+.container .swiper_card:hover::after {
+    transform: skewX(0deg);
     inset: 40px -10px;
 }
 
-.container .box .content {
+.container .swiper_card .content {
     position: relative;
     display: flex;
     justify-content: center;
@@ -83,55 +60,53 @@ body {
     overflow: hidden;
 }
 
-
-
-.container .box .content .icon {
+.container .swiper_card .content .icon {
     color: var(--clr);
     width: 80px;
     height: 80px;
-    box-shadow: 0 0 0 4px #2e2e2e, 0 0 0 6px var(--clr);
+    box-shadow: 0 0 0 4px var(--bg-gray), 0 0 0 6px var(--clr);
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 2.5em;
-    background-color: #2e2e2e;
+    background-color: var(--bg-gray);
     transition: 0.5s ease-in-out;
 }
 
-.container .box:hover .content .icon {
+.container .swiper_card:hover .content .icon {
     background: var(--clr);
-    color: #2e2e2e;
-    box-shadow: 0 0 0 4px #2e2e2e, 0 0 0 300px var(--clr);
+    color: var(--bg-gray);
+    box-shadow: 0 0 0 4px var(--bg-gray), 0 0 0 300px var(--clr);
 }
 
 
-.container .box .content .text h3 {
+.container .swiper_card .content .text h3 {
     font-size: 1.5em;
-    color: #fff;
+    color: white;
     font-weight: 500;
     transition: 0.5s ease-in-out;
 }
 
-.container .box:hover .content .text h3 {
-    color: #2e2e2e;
+.container .swiper_card:hover .content .text h3 {
+    color: var(--bg-gray);
 }
 
 
 
-.container .box .content .text p {
-    color: #993;
+.container .swiper_card .content .text p {
+    color: var(--text-gray);
     transition: 0.5s ease-in-out;
 }
 
-.container .box:hover .content .text p {
-    color: #2e2e2e;
+.container .swiper_card:hover .content .text p {
+    color: var(--bg-gray);
 }
 
 
-.container .box .content .text a {
+.container .swiper_card .content .text a {
     position: relative;
     background-color: var(--clr);
-    color: #2e2e2e;
+    color: var(--bg-gray);
     padding: 8px 15px;
     display: inline-block;
     text-decoration: none;
@@ -140,7 +115,7 @@ body {
     transition: 0.5s ease-in-out;
 }
 
-.container .box:hover .content .text a {
-    background-color: #2e2e2e;
+.container .swiper_card:hover .content .text a {
+    background-color: var(--bg-gray);
     color: var(--clr);
 }

@@ -1,0 +1,44 @@
+/* Swiper bullets */
+
+.swiper-pagination-bullets {
+    position: sticky !important;
+    bottom: -.4rem !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 3rem;
+    gap: 6px;
+  }
+  
+  
+  .swiper-pagination-bullet {
+    width: 32px !important;
+    height: 32px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: black;
+    color: var(--orange);
+    font-size: 1.4rem;
+    font-weight: 600;
+    border: 2px outset var(--orange);
+  }
+  
+  .swiper-pagination-bullet-active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--orange) !important;
+    color: black;
+    font-size: 1.4rem;
+    font-weight: 600;
+    border: 2px outset black;
+  }
+  
+  .swiper-pagination-bullet:hover {
+    width: 32px !important;
+    height: 32px !important;
+    background: var(--orange);
+    border: 2px outset black;
+    color: black;
+  }

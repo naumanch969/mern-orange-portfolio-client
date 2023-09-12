@@ -4,14 +4,14 @@
     box-sizing: border-box;
 }
 
-body {
+/* body {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     background: #222;
     cursor: none;
-}
+} */
 
 ul {
     position: relative;
@@ -66,6 +66,6 @@ ul li:hover a span {
     opacity: 0;
 }
 
-body:hover #cursor {
+/* body:hover #cursor {
     opacity: 1;
-}
+} */

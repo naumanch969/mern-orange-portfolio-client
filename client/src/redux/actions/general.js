@@ -1,10 +1,11 @@
 import * as api from '../api'
-import { start, end, error, uploadImageReducer, deleteImageReducer} from '../reducers/general'
+import { start, end, error, uploadImageReducer, deleteImageReducer } from '../reducers/general'
 
 export const uploadImage = (formData) => async (dispatch) => {
     try {
         dispatch(start())
         const { data } = await api.uploadImage(formData)
+        console.log('data', data.result)
         dispatch(uploadImageReducer(data.result))
         dispatch(end())
     } catch (err) {

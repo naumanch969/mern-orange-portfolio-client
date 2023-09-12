@@ -4,13 +4,13 @@
     box-sizing: border-box;
 }
 
-body {
+/* body {
     display: flex;
     justify-self: center;
     align-items: center;
     min-height: 100vh;
     background: #111;
-}
+} */
 
 .container {
     position: relative;

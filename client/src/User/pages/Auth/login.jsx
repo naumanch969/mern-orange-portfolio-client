@@ -1,30 +1,70 @@
-import React from 'react'
-import './login.css'
+import { Person } from '@mui/icons-material'
+import React, { useState } from 'react'
+import { Input } from '../../components'
+import { login } from '../../../redux/actions/user'
+import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 
-const login = () => {
+const Login = () => {
+
+    //////////////////////////////////// STATES //////////////////////////////////////////
+    const initialUserState = { email: '', password: '' }
+    const [userData, setUserData] = useState(initialUserState)
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const { isFetching, error } = useSelector(state => state.user)
+
+
+    const handleLogin = () => {
+        dispatch(login(userData, navigate))
+    }
+
 
     return (
-        <div className='wrapper relative bg-[#1c1c1c] w-[300px] h-[430px] rounded-[8px] overflow-hidden ' >
-            <div className="absolute flex flex-col inset-[2px] rounded-[8px] z-[10] bg-[#28292d] px-[20px] py-[50px]  ">
-                <h2 className='text-orange text-center tracking-[0.1em] font-medium ' >Sign In</h2>
-                <div className="inputBox relative w-full mt-[35px] ">
-                    <input type="text" required='required' className='pt-[20px] px-[10px] pb-[10px] relative w-full bg-transparent border-none outline-none text-[#23242a] text-[1em] tracking-[0.5em] z-10 ' />
-                    <label className='absolute left-0 pt-[20px] px-0 pb-[10px] text-[1em] text-[#8f8f8f] pointer-events-none tracking-[.5em] transition-[.5s] ' >Username</label>
-                    <i className='absolute left-0 bottom-0 w-full h-[2px] bg-orange rounded-[4px] transition-[.5s] pointer-events-none z-[9' ></i>
+        <div className="flex justify-center items-center ">
+            <div className="w-[24rem] shadow-xl bg-darkGray p-[1rem] rounded-[12px] overflow-hidden flex flex-col justify-between items-center gap-[2rem] " >
+
+                <div className="flex justify-center items-center border-[1px] border-white w-[7rem] h-[7rem] rounded-full bg-lightGray " >
+                    <Person style={{ fontSize: '5rem', color: 'white' }} />
                 </div>
-                <div className="inputBox relative w-full mt-[35px] ">
-                    <input type="password" required='required' className='pt-[20px] px-[10px] pb-[10px] relative w-full bg-transparent border-none outline-none text-[#23242a] text-[1em] tracking-[0.5em] z-10 ' />
-                    <label className='absolute left-0 pt-[20px] px-0 pb-[10px] text-[1em] text-[#8f8f8f] pointer-events-none tracking-[.5em] transition-[.5s] ' >Password</label>
-                    <i className='absolute left-0 bottom-0 w-full h-[2px] bg-orange rounded-[4px] transition-[.5s] pointer-events-none z-[9' ></i>
+
+                <div className="flex flex-col gap-[1.5rem] w-full " >
+                    <Input
+                        label='Email'
+                        attribute="email"
+                        type="email"
+                        placeholder="email@example.com"
+                        formData={userData}
+                        setFormData={setUserData}
+                    />
+                    <Input
+                        label='Password'
+                        attribute="password"
+                        type='password'
+                        placeholder="Your password here"
+                        formData={userData}
+                        setFormData={setUserData}
+                        showEyeIcon
+                    />
                 </div>
-                <div className="flex justify-between">
-                    <a href="#" className='hover:text-orange my-[10px] text-[0.75em] text-[#8f8f8f] decoration-none ' >Forget Password</a>
-                    <a href="#" className='hover:text-orange my-[10px] text-[0.75em] text-[#8f8f8f] decoration-none ' >Signup</a>
+
+                <div className="flex flex-col items-center w-full gap-[2rem] " >
+                    <div className="flex flex-col items-center gap-[1rem] w-full " >
+                        <button onClick={handleLogin} className="w-full bg-orange p-[4px] rounded-[4px] min-h-[40px] " >
+                            {isFetching ? 'Submitting...' : 'Login'}
+                        </button>
+                        <p className="text-textGray flex justify-center items-center gap-[8px] " >
+                            Don't have account?
+                            <Link to='/auth/register' className="cursor-pointer text-orange hover:underline  " >Register here</Link>
+                        </p>
+                    </div>
                 </div>
-                <input type="submit" value="Login" className='active:opacity-80 border-none outline-none bg-orange py-[11px] px-[25px] w-[100px] mt-[10px] rounded-[4px] font-semibold cursor-pointer ' />
+
+                {error && <p className="text-red text-[14px] " >{error}</p>}
+
             </div>
         </div>
     )
 }
 
-export default login
+export default Login

@@ -55,7 +55,7 @@ const Admin = () => {
                 }
                 <div style={{ minHeight: `calc(100vh - 4rem)` }} className={`py-[1rem] px-[2rem] pb-[5rem] z-40 ${showSidebar ? 'lg:w-[80%] md:w-[75%] sm:w-full w-full' : 'w-full'} `} >
                     <Routes>
-                        <Route path="/" element={<Navigate replace to="overview" />} />
+                        <Route path="/" element={<Navigate replace to="services" />} />
                         <Route path="/resumes" element={<Resumes />} />
                         <Route path="/services" element={<Services />} />
                         <Route path="/skills" element={<Skills />} />

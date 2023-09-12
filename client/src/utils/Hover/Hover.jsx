@@ -12,23 +12,27 @@ const Hover = () => {
 
   let cursor = document.querySelector('#cursor')
   document.addEventListener('mousemove', (e) => {
-    cursor.style.top = e.pageY + 'px'
-    cursor.style.left = e.pageX + 'px'
+    if (cursor) {
+      cursor.style.top = e.pageY + 'px'
+      cursor.style.left = e.pageX + 'px'
+    }
   })
 
 
 
 
   return (
-    <ul>
+    <>
       <div id="cursor"></div>
-      <li><a href="#">Home</a></li>
-      <li><a href="#">About</a></li>
-      <li><a href="#">Contact</a></li>
-      <li><a href="#">Creative Menu Hover Effect</a></li>
-      <li><a href="#">Services</a></li>
-      <li><a href="#">Projects</a></li>
-    </ul>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Creative Menu Hover Effect</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Projects</a></li>
+      </ul>
+    </>
   )
 }
 

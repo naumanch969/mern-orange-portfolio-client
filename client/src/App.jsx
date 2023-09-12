@@ -1,24 +1,23 @@
 import { useStateContext } from "./contexts/ContextProvider"
 
-// import Admin from "./Admin/Admin"
-// import User from "./User/User"
-import Hover from "./utils/Hover/Hover";
+import Admin from "./Admin/Admin"
+import User from "./User/User"
 
 const App = () => {
 
   const { mode } = useStateContext()
 
   return (
-    <div className="bg-black flex justify-center items-center h-[20rem] " >
+    <div className="bg-black min-h-screen " >
 
 
-      {/* {
+      {
         mode == 'admin'
           ?
           <Admin />
           :
           <User />
-      } */}
+      }
 
     </div>
   );

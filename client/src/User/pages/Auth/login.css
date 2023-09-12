@@ -1,12 +1,7 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Courier New', Courier, monospace;
-}
 
-/* main wrapper */
-.wrapper::before {
+
+/* main login_wrapper */
+.login_wrapper::before {
     content: '';
     position: absolute;
     top: -50%;
@@ -18,7 +13,7 @@
     animation: animate 6s linear infinite;
 }
 
-.wrapper::after {
+.login_wrapper::after {
     content: '';
     position: absolute;
     top: -50%;
@@ -42,16 +37,3 @@
 }
 
 
-.inputBox input:valid~label {}
-
-.inputBox input:focus~label {
-    color: #feb931;
-    transform: translateX(0px) translateY(-34px);
-    font-size: 0.75em;
-}
-
-.inputBox input:valid~i {}
-
-.inputBox input:focus~i {
-    height: 44px;
-}
