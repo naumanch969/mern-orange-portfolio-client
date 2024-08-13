@@ -38,7 +38,6 @@ const Services = () => {
                 {
                     services.map((service, index) => (
                         <>
-                            {console.log(service)}
                             <ServiceCard
                                 key={index}
                                 service={service}

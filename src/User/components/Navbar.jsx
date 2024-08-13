@@ -17,7 +17,6 @@ const Navbar = ({ navbarMenuRef, showMenu, setShowMenu }) => {
     const { setMode, initialUserState, initialErrorObj, setErrorObj } = useStateContext()
     ////////////////////////////// VARIABLES //////////////////////////////////////
     const { pathname } = useLocation()
-    console.log(pathname)
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { loggedUser } = useSelector(state => state.user)
@@ -94,7 +93,6 @@ const Navbar = ({ navbarMenuRef, showMenu, setShowMenu }) => {
                             {
                                 navLinks.map((link, index) => (
                                     <div key={index} className="flex flex-col justify-center items-center w-auto " >
-                                        {console.log('this', link)}
                                         <Link
                                             id="link"
                                             to={`${link.toLowerCase()}`}
